@@ -41,10 +41,10 @@ OVERLAY = function()
 	// Focus inputs using cached focusable elements (see update())
 	function focusInputs(blurElems) {
 		// Blurring body element in IE causes window.open windows to unfocus!
-		if(focusableElems.length < 1 && blurElems.length) { blurElems.not('body').blur(); }
+		if(focusableElems.length < 1 && blurElems.length) { blurElems.not('body').trigger('blur'); }
 
 		// Focus the inputs
-		else { focusableElems.first().focus(); }
+		else { focusableElems.first().trigger('focus'); }
 	}
 
 	// Steal focus from elements outside tooltip
@@ -73,23 +73,25 @@ OVERLAY = function()
 			// Create document overlay
 			elem = self.elem = $('<div />', {
 				id: 'qtip-overlay',
-				html: '<div></div>',
-				mousedown: function() { return FALSE; }
+				html: '<div></div>'
+			})
+			.on('mousedown', function() {
+				return FALSE;
 			})
 			.hide();
 
 			// Make sure we can't focus anything outside the tooltip
-			$(document.body).bind('focusin'+MODALSELECTOR, stealFocus);
+			$(document.body).on('focusin'+MODALSELECTOR, stealFocus);
 
 			// Apply keyboard "Escape key" close handler
-			$(document).bind('keydown'+MODALSELECTOR, function(event) {
-				if(current && current.options.show.modal.escape && event.keyCode === 27) {
+			$(document).on('keydown'+MODALSELECTOR, function(event) {
+				if(current && current.options.show.modal.escape && event.which === 27) {
 					current.hide(event);
 				}
 			});
 
 			// Apply click handler for blur option
-			elem.bind('click'+MODALSELECTOR, function(event) {
+			elem.on('click'+MODALSELECTOR, function(event) {
 				if(current && current.options.show.modal.blur) {
 					current.hide(event);
 				}
@@ -145,7 +147,7 @@ OVERLAY = function()
 			elem.stop(TRUE, FALSE);
 
 			// Use custom function if provided
-			if($.isFunction(effect)) {
+			if(typeof effect === 'function') {
 				effect.call(elem, state);
 			}
 

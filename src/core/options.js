@@ -1,12 +1,12 @@
 function invalidOpt(a) {
-	return a === NULL || $.type(a) !== 'object';
+	return a === NULL || typeof a !== 'object';
 }
 
 function invalidContent(c) {
-	return !($.isFunction(c) || 
+	return !(typeof c === 'function' || 
             c && c.attr || 
             c.length || 
-            $.type(c) === 'object' && (c.jquery || c.then));
+            (typeof c === 'object' && c !== null) && (c.jquery || c.then));
 }
 
 // Option object sanitizer
@@ -172,7 +172,7 @@ CHECKS = PROTOTYPE.checks = {
 
 		// Events check
 		'^events.(render|show|move|hide|focus|blur)$': function(obj, o, v) {
-			this.rendered && this.tooltip[($.isFunction(v) ? '' : 'un') + 'bind']('tooltip'+o, v);
+			this.rendered && this.tooltip[(typeof v === 'function' ? '' : 'un') + 'bind']('tooltip'+o, v);
 		},
 
 		// Properties which require event reassignment
@@ -279,7 +279,7 @@ PROTOTYPE.set = function(option, value) {
 	 * Also set positioning flag so we don't get loads of redundant repositioning calls.
 	 */
 	this.positioning = TRUE;
-	$.each(option, $.proxy(setCallback, this));
+	$.each(option, setCallback.bind(this));
 	this.positioning = FALSE;
 
 	// Update position if needed

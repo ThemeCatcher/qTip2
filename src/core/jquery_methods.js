@@ -136,7 +136,7 @@ QTIP = $.fn.qtip = function(options, notation, newValue)
 			var api, id;
 
 			// Find next available ID, or use custom ID if provided
-			id = $.isArray(opts.id) ? opts.id[i] : opts.id;
+			id = Array.isArray(opts.id) ? opts.id[i] : opts.id;
 			id = !id || id === FALSE || id.length < 1 || QTIP.api[id] ? QTIP.nextid++ : id;
 
 			// Initialize the qTip and re-grab newly sanitized options

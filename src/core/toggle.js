@@ -60,12 +60,12 @@ PROTOTYPE.toggle = function(state, event) {
 		this.mouse && (cache.origin = $.event.fix(this.mouse));
 
 		// Update tooltip content & title if it's a dynamic function
-		if($.isFunction(contentOptions.text)) { this._updateContent(contentOptions.text, FALSE); }
-		if($.isFunction(contentOptions.title)) { this._updateTitle(contentOptions.title, FALSE); }
+		if(typeof contentOptions.text === 'function') { this._updateContent(contentOptions.text, FALSE); }
+		if(typeof contentOptions.title === 'function') { this._updateTitle(contentOptions.title, FALSE); }
 
 		// Cache mousemove events for positioning purposes (if not already tracking)
 		if(!trackingBound && posOptions.target === 'mouse' && posOptions.adjust.mouse) {
-			$(document).bind('mousemove.'+NAMESPACE, this._storeMouse);
+			$(document).on('mousemove.'+NAMESPACE, this._storeMouse);
 			trackingBound = TRUE;
 		}
 
@@ -89,7 +89,7 @@ PROTOTYPE.toggle = function(state, event) {
 
 		// Remove mouse tracking event if not needed (all tracking qTips are hidden)
 		if(trackingBound && !$(SELECTOR+'[tracking="true"]:visible', opts.solo).not(tooltip).length) {
-			$(document).unbind('mousemove.'+NAMESPACE);
+			$(document).off('mousemove.'+NAMESPACE);
 			trackingBound = FALSE;
 		}
 
@@ -98,7 +98,7 @@ PROTOTYPE.toggle = function(state, event) {
 	}
 
 	// Define post-animation, state specific properties
-	after = $.proxy(function() {
+	after = (function() {
 		if(state) {
 			// Prevent antialias from disappearing in IE by removing filter
 			if(BROWSER.ie) { tooltip[0].style.removeAttribute('filter'); }
@@ -127,7 +127,7 @@ PROTOTYPE.toggle = function(state, event) {
 
 		// tooltipvisible/tooltiphidden events
 		this._trigger(state ? 'visible' : 'hidden');
-	}, this);
+	}).bind(this);
 
 	// If no effect type is supplied, use a simple toggle
 	if(opts.effect === FALSE || animate === FALSE) {
@@ -136,7 +136,7 @@ PROTOTYPE.toggle = function(state, event) {
 	}
 
 	// Use custom function if provided
-	else if($.isFunction(opts.effect)) {
+	else if(typeof opts.effect === 'function') {
 		tooltip.stop(1, 1);
 		opts.effect.call(tooltip, this);
 		tooltip.queue('fx', function(n) {
