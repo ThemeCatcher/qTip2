@@ -19,5 +19,8 @@ var bower = {
 	dependencies: pkg.dependencies
 };
 
-fs.writeFile('bower.json', JSON.stringify(bower, null, '\t'));
-
+fs.writeFile('bower.json', JSON.stringify(bower, null, '\t'), err => {
+	if(err) {
+		throw err;
+	}
+});
