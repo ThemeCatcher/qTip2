@@ -1,12 +1,12 @@
 /*
- * qTip2 - Pretty powerful tooltips - v3.0.4-2-g
+ * qTip2 - Pretty powerful tooltips - v3.0.5
  * http://qtip2.com
  *
  * Copyright (c) 2023 
  * Released under the MIT licenses
  * http://jquery.org/license
  *
- * Date: Fri Mar 10 2023 10:03 UTC+0000
+ * Date: Fri Mar 10 2023 10:08 UTC+0000
  * Plugins: None
  * Styles: core
  */
@@ -1932,7 +1932,7 @@ if(!$.ui) {
 	};
 }
 ;// qTip version
-QTIP.version = '3.0.4-2-g';
+QTIP.version = '3.0.5';
 
 // Base ID for all qTips
 QTIP.nextid = 0;
