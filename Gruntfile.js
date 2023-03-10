@@ -16,14 +16,14 @@ module.exports = function(grunt) {
 						' * <%=pkg.homepage%>\n' +
 						' *\n' +
 						' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>\n' +
-						' * Released under the <%= _.pluck(pkg.licenses, "type").join(", ") %> licenses\n' +
+						' * Released under the <%= _.map(pkg.licenses, "type").join(", ") %> licenses\n' +
 						' * http://jquery.org/license\n' +
 						' *\n' +
 						' * Date: <%= grunt.template.today("ddd mmm d yyyy hh:MM Zo", true) %>\n' +
 						'@@BUILDPROPS */\n',
 
 					minified:'/* <%= pkg.name %> @@vVERSION | Plugins: @@PLUGINS | Styles: @@STYLES | <%= pkg.homepage.replace("http://","") %> | '+
-						'Licensed <%= _.pluck(pkg.licenses, "type").join(", ") %> | <%=grunt.template.today() %> */\n'
+						'Licensed <%= _.map(pkg.licenses, "type").join(", ") %> | <%=grunt.template.today() %> */\n'
 				}
 			},
 
